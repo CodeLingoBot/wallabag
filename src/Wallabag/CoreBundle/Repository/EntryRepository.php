@@ -437,11 +437,7 @@ class EntryRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function getQueryBuilderByUser($userId)
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.user = :userId')->setParameter('userId', $userId);
-    }
+    
 
     /**
      * Return a sorted query builder to be used by other getBuilderFor* method.
@@ -452,10 +448,7 @@ class EntryRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function getSortedQueryBuilderByUser($userId, $sortBy = 'createdAt', $direction = 'desc')
-    {
-        return $this->sortQueryBuilder($this->getQueryBuilderByUser($userId), $sortBy, $direction);
-    }
+    
 
     /**
      * Return the given QueryBuilder with an orderBy() call.
@@ -466,9 +459,5 @@ class EntryRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function sortQueryBuilder(QueryBuilder $qb, $sortBy = 'createdAt', $direction = 'desc')
-    {
-        return $qb
-            ->orderBy(sprintf('e.%s', $sortBy), $direction);
-    }
+    
 }

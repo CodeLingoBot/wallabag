@@ -237,54 +237,5 @@ class WallabagV2ImportTest extends TestCase
         $this->assertSame(['skipped' => 4, 'imported' => 2, 'queued' => 0], $wallabagV2Import->getSummary());
     }
 
-    private function getWallabagV2Import($unsetUser = false, $dispatched = 0)
-    {
-        $this->user = new User();
-
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->uow = $this->getMockBuilder('Doctrine\ORM\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->em
-            ->expects($this->any())
-            ->method('getUnitOfWork')
-            ->willReturn($this->uow);
-
-        $this->uow
-            ->expects($this->any())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-
-        $this->contentProxy = $this->getMockBuilder('Wallabag\CoreBundle\Helper\ContentProxy')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->tagsAssigner = $this->getMockBuilder('Wallabag\CoreBundle\Helper\TagsAssigner')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher
-            ->expects($this->exactly($dispatched))
-            ->method('dispatch');
-
-        $wallabag = new WallabagV2Import($this->em, $this->contentProxy, $this->tagsAssigner, $dispatcher);
-
-        $this->logHandler = new TestHandler();
-        $logger = new Logger('test', [$this->logHandler]);
-        $wallabag->setLogger($logger);
-
-        if (false === $unsetUser) {
-            $wallabag->setUser($this->user);
-        }
-
-        return $wallabag;
-    }
+    
 }

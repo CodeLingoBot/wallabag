@@ -335,75 +335,30 @@ class ConfigController extends Controller
      * @param array $tags
      * @param int   $userId
      */
-    private function removeAllTagsByStatusAndUserId($tags, $userId)
-    {
-        if (empty($tags)) {
-            return;
-        }
-
-        $this->get('wallabag_core.entry_repository')
-            ->removeTags($userId, $tags);
-
-        // cleanup orphan tags
-        $em = $this->getDoctrine()->getManager();
-
-        foreach ($tags as $tag) {
-            if (0 === \count($tag->getEntries())) {
-                $em->remove($tag);
-            }
-        }
-
-        $em->flush();
-    }
+    
 
     /**
      * Remove all tags for a given user and cleanup orphan tags.
      *
      * @param int $userId
      */
-    private function removeAllTagsByUserId($userId)
-    {
-        $tags = $this->get('wallabag_core.tag_repository')->findAllTags($userId);
-        $this->removeAllTagsByStatusAndUserId($tags, $userId);
-    }
+    
 
     /**
      * Remove all tags for a given user and cleanup orphan tags.
      *
      * @param int $userId
      */
-    private function removeTagsForArchivedByUserId($userId)
-    {
-        $tags = $this->get('wallabag_core.tag_repository')->findForArchivedArticlesByUser($userId);
-        $this->removeAllTagsByStatusAndUserId($tags, $userId);
-    }
+    
 
-    private function removeAnnotationsForArchivedByUserId($userId)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $archivedEntriesAnnotations = $this->getDoctrine()
-            ->getRepository('WallabagAnnotationBundle:Annotation')
-            ->findAllArchivedEntriesByUser($userId);
-
-        foreach ($archivedEntriesAnnotations as $archivedEntriesAnnotation) {
-            $em->remove($archivedEntriesAnnotation);
-        }
-
-        $em->flush();
-    }
+    
 
     /**
      * Validate that a rule can be edited/deleted by the current user.
      *
      * @param TaggingRule $rule
      */
-    private function validateRuleAction(TaggingRule $rule)
-    {
-        if ($this->getUser()->getId() !== $rule->getConfig()->getUser()->getId()) {
-            throw $this->createAccessDeniedException('You can not access this tagging rule.');
-        }
-    }
+    
 
     /**
      * Retrieve config for the current user.
@@ -411,17 +366,5 @@ class ConfigController extends Controller
      *
      * @return Config
      */
-    private function getConfig()
-    {
-        $config = $this->getDoctrine()
-            ->getRepository('WallabagCoreBundle:Config')
-            ->findOneByUser($this->getUser());
-
-        // should NEVER HAPPEN ...
-        if (!$config) {
-            $config = new Config($this->getUser());
-        }
-
-        return $config;
-    }
+    
 }

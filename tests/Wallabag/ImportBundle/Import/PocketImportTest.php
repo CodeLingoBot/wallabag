@@ -588,56 +588,5 @@ JSON;
         $this->assertSame(['skipped' => 0, 'imported' => 1, 'queued' => 0], $pocketImport->getSummary());
     }
 
-    private function getPocketImport($consumerKey = 'ConsumerKey', $dispatched = 0)
-    {
-        $this->user = new User();
-
-        $config = new Config($this->user);
-        $config->setPocketConsumerKey('xxx');
-
-        $this->user->setConfig($config);
-
-        $this->contentProxy = $this->getMockBuilder('Wallabag\CoreBundle\Helper\ContentProxy')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->tagsAssigner = $this->getMockBuilder('Wallabag\CoreBundle\Helper\TagsAssigner')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->uow = $this->getMockBuilder('Doctrine\ORM\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->em
-            ->expects($this->any())
-            ->method('getUnitOfWork')
-            ->willReturn($this->uow);
-
-        $this->uow
-            ->expects($this->any())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher
-            ->expects($this->exactly($dispatched))
-            ->method('dispatch');
-
-        $pocket = new PocketImport($this->em, $this->contentProxy, $this->tagsAssigner, $dispatcher);
-        $pocket->setUser($this->user);
-
-        $this->logHandler = new TestHandler();
-        $logger = new Logger('test', [$this->logHandler]);
-        $pocket->setLogger($logger);
-
-        return $pocket;
-    }
+    
 }

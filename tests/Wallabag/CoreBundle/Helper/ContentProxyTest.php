@@ -873,17 +873,7 @@ class ContentProxyTest extends TestCase
      *
      * @return string
      */
-    private function strToHex($string)
-    {
-        $hex = '';
-        for ($i = 0; $i < \strlen($string); ++$i) {
-            $ord = \ord($string[$i]);
-            $hexCode = dechex($ord);
-            $hex .= substr('0' . $hexCode, -2);
-        }
-
-        return strtoupper($hex);
-    }
+    
 
     /**
      * https://stackoverflow.com/a/18506801.
@@ -892,42 +882,11 @@ class ContentProxyTest extends TestCase
      *
      * @return string
      */
-    private function hexToStr($hex)
-    {
-        $string = '';
-        for ($i = 0; $i < \strlen($hex) - 1; $i += 2) {
-            $string .= \chr(hexdec($hex[$i] . $hex[$i + 1]));
-        }
+    
 
-        return $string;
-    }
+    
 
-    private function getTaggerMock()
-    {
-        return $this->getMockBuilder(RuleBasedTagger::class)
-            ->setMethods(['tag'])
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
+    
 
-    private function getLogger()
-    {
-        return new NullLogger();
-    }
-
-    private function getValidator($withDefaultMock = true)
-    {
-        $mock = $this->getMockBuilder(RecursiveValidator::class)
-            ->setMethods(['validate'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        if ($withDefaultMock) {
-            $mock->expects($this->any())
-                ->method('validate')
-                ->willReturn(new ConstraintViolationList());
-        }
-
-        return $mock;
-    }
+    
 }

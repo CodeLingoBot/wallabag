@@ -185,41 +185,12 @@ class DownloadImages
      *
      * @return array An array of urls
      */
-    private function getSrcsetUrls(Crawler $imagesCrawler)
-    {
-        $urls = [];
-        $iterator = $imagesCrawler
-            ->getIterator();
-        while ($iterator->valid()) {
-            $srcsetAttribute = $iterator->current()->getAttribute('srcset');
-            if ('' !== $srcsetAttribute) {
-                // Couldn't start with " OR ' OR a white space
-                // Could be one or more white space
-                // Must be one or more digits followed by w OR x
-                $pattern = "/(?:[^\"'\s]+\s*(?:\d+[wx])+)/";
-                preg_match_all($pattern, $srcsetAttribute, $matches);
-                $srcset = \call_user_func_array('array_merge', $matches);
-                $srcsetUrls = array_map(function ($src) {
-                    return trim(explode(' ', $src, 2)[0]);
-                }, $srcset);
-                $urls = array_merge($srcsetUrls, $urls);
-            }
-            $iterator->next();
-        }
-
-        return $urls;
-    }
+    
 
     /**
      * Setup base folder where all images are going to be saved.
      */
-    private function setFolder()
-    {
-        // if folder doesn't exist, attempt to create one and store the folder name in property $folder
-        if (!file_exists($this->baseFolder)) {
-            mkdir($this->baseFolder, 0755, true);
-        }
-    }
+    
 
     /**
      * Generate the folder where we are going to save images based on the entry url.
@@ -228,20 +199,7 @@ class DownloadImages
      *
      * @return string
      */
-    private function getRelativePath($entryId)
-    {
-        $hashId = hash('crc32', $entryId);
-        $relativePath = $hashId[0] . '/' . $hashId[1] . '/' . $hashId;
-        $folderPath = $this->baseFolder . '/' . $relativePath;
-
-        if (!file_exists($folderPath)) {
-            mkdir($folderPath, 0777, true);
-        }
-
-        $this->logger->debug('DownloadImages: Folder used for that Entry id', ['folder' => $folderPath, 'entryId' => $entryId]);
-
-        return $relativePath;
-    }
+    
 
     /**
      * Make an $url absolute based on the $base.
@@ -253,28 +211,7 @@ class DownloadImages
      *
      * @return false|string
      */
-    private function getAbsoluteLink($base, $url)
-    {
-        if (preg_match('!^https?://!i', $url)) {
-            // already absolute
-            return $url;
-        }
-
-        $base = new \SimplePie_IRI($base);
-
-        // remove '//' in URL path (causes URLs not to resolve properly)
-        if (isset($base->ipath)) {
-            $base->ipath = preg_replace('!//+!', '/', $base->ipath);
-        }
-
-        if ($absolute = \SimplePie_IRI::absolutize($base, $url)) {
-            return $absolute->get_uri();
-        }
-
-        $this->logger->error('DownloadImages: Can not make an absolute link', ['base' => $base, 'url' => $url]);
-
-        return false;
-    }
+    
 
     /**
      * Retrieve and validate the extension from the response of the url of the image.
@@ -284,36 +221,5 @@ class DownloadImages
      *
      * @return string|false Extension name or false if validation failed
      */
-    private function getExtensionFromResponse(Response $res, $imagePath)
-    {
-        $ext = $this->mimeGuesser->guess($res->getHeader('content-type'));
-        $this->logger->debug('DownloadImages: Checking extension', ['ext' => $ext, 'header' => $res->getHeader('content-type')]);
-
-        // ok header doesn't have the extension, try a different way
-        if (empty($ext)) {
-            $types = [
-                'jpeg' => "\xFF\xD8\xFF",
-                'gif' => 'GIF',
-                'png' => "\x89\x50\x4e\x47\x0d\x0a",
-            ];
-            $bytes = substr((string) $res->getBody(), 0, 8);
-
-            foreach ($types as $type => $header) {
-                if (0 === strpos($bytes, $header)) {
-                    $ext = $type;
-                    break;
-                }
-            }
-
-            $this->logger->debug('DownloadImages: Checking extension (alternative)', ['ext' => $ext]);
-        }
-
-        if (!\in_array($ext, ['jpeg', 'jpg', 'gif', 'png'], true)) {
-            $this->logger->error('DownloadImages: Processed image with not allowed extension. Skipping: ' . $imagePath);
-
-            return false;
-        }
-
-        return $ext;
-    }
+    
 }

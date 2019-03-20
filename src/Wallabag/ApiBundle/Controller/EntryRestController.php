@@ -793,16 +793,7 @@ class EntryRestController extends WallabagRestController
      *
      * @return JsonResponse
      */
-    private function sendResponse($data)
-    {
-        // https://github.com/schmittjoh/JMSSerializerBundle/issues/293
-        $context = new SerializationContext();
-        $context->setSerializeNull(true);
-
-        $json = $this->get('jms_serializer')->serialize($data, 'json', $context);
-
-        return (new JsonResponse())->setJson($json);
-    }
+    
 
     /**
      * Retrieve value from the request.
@@ -812,22 +803,7 @@ class EntryRestController extends WallabagRestController
      *
      * @return array
      */
-    private function retrieveValueFromRequest(Request $request)
-    {
-        return [
-            'title' => $request->request->get('title'),
-            'tags' => $request->request->get('tags', []),
-            'isArchived' => $request->request->get('archive'),
-            'isStarred' => $request->request->get('starred'),
-            'isPublic' => $request->request->get('public'),
-            'content' => $request->request->get('content'),
-            'language' => $request->request->get('language'),
-            'picture' => $request->request->get('preview_picture'),
-            'publishedAt' => $request->request->get('published_at'),
-            'authors' => $request->request->get('authors', ''),
-            'origin_url' => $request->request->get('origin_url', ''),
-        ];
-    }
+    
 
     /**
      * Return information about the entry if it exist and depending on the id or not.
@@ -837,12 +813,5 @@ class EntryRestController extends WallabagRestController
      *
      * @return bool|int
      */
-    private function returnExistInformation($entry, $returnId)
-    {
-        if ($returnId) {
-            return $entry instanceof Entry ? $entry->getId() : null;
-        }
-
-        return $entry instanceof Entry;
-    }
+    
 }

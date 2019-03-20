@@ -67,10 +67,7 @@ class CryptoProxy
      *
      * @return Key
      */
-    private function loadKey()
-    {
-        return Key::loadFromAsciiSafeString($this->encryptionKey);
-    }
+    
 
     /**
      * Keep first and last character and put some stars in between.
@@ -79,8 +76,5 @@ class CryptoProxy
      *
      * @return string
      */
-    private function mask($value)
-    {
-        return \strlen($value) > 0 ? $value[0] . '*****' . $value[\strlen($value) - 1] : 'Empty value';
-    }
+    
 }

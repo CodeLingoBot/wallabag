@@ -83,17 +83,5 @@ class ImportController extends Controller
      *
      * @return int
      */
-    private function getTotalMessageInRabbitQueue($importService)
-    {
-        $message = $this
-            ->get('old_sound_rabbit_mq.import_' . $importService . '_consumer')
-            ->getChannel()
-            ->basic_get('wallabag.import.' . $importService);
-
-        if (null === $message) {
-            return 0;
-        }
-
-        return $message->delivery_info['message_count'] + 1;
-    }
+    
 }

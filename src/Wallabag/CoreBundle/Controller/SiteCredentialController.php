@@ -155,12 +155,7 @@ class SiteCredentialController extends Controller
     /**
      * Throw a 404 if the feature is disabled.
      */
-    private function isSiteCredentialsEnabled()
-    {
-        if (!$this->get('craue_config')->get('restricted_access')) {
-            throw $this->createNotFoundException('Feature "restricted_access" is disabled, controllers too.');
-        }
-    }
+    
 
     /**
      * Creates a form to delete a site credential entity.
@@ -169,24 +164,12 @@ class SiteCredentialController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(SiteCredential $siteCredential)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('site_credentials_delete', ['id' => $siteCredential->getId()]))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
+    
 
     /**
      * Check if the logged user can manage the given site credential.
      *
      * @param SiteCredential $siteCredential The site credential entity
      */
-    private function checkUserAction(SiteCredential $siteCredential)
-    {
-        if (null === $this->getUser() || $this->getUser()->getId() !== $siteCredential->getUser()->getId()) {
-            throw $this->createAccessDeniedException('You can not access this site credential.');
-        }
-    }
+    
 }

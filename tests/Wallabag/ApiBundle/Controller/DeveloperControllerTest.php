@@ -131,18 +131,5 @@ class DeveloperControllerTest extends WallabagCoreTestCase
      *
      * @return Client
      */
-    private function createApiClientForUser($username, $grantTypes = ['password'])
-    {
-        $client = $this->getClient();
-        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
-        $userManager = $client->getContainer()->get('fos_user.user_manager');
-        $user = $userManager->findUserBy(['username' => $username]);
-        $apiClient = new Client($user);
-        $apiClient->setName('My app');
-        $apiClient->setAllowedGrantTypes($grantTypes);
-        $em->persist($apiClient);
-        $em->flush();
-
-        return $apiClient;
-    }
+    
 }

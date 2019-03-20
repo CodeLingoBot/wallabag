@@ -167,12 +167,5 @@ class ManageController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(User $user)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', ['id' => $user->getId()]))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
+    
 }

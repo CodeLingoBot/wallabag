@@ -187,52 +187,15 @@ class RuleBasedTaggerTest extends TestCase
         }
     }
 
-    private function getUser(array $taggingRules = [])
-    {
-        $user = new User();
-        $config = new Config($user);
+    
 
-        $user->setConfig($config);
+    
 
-        foreach ($taggingRules as $rule) {
-            $config->addTaggingRule($rule);
-        }
+    
 
-        return $user;
-    }
+    
 
-    private function getTaggingRule($rule, array $tags)
-    {
-        $taggingRule = new TaggingRule();
-        $taggingRule->setRule($rule);
-        $taggingRule->setTags($tags);
+    
 
-        return $taggingRule;
-    }
-
-    private function getRulerZMock()
-    {
-        return $this->getMockBuilder('RulerZ\RulerZ')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    private function getTagRepositoryMock()
-    {
-        return $this->getMockBuilder('Wallabag\CoreBundle\Repository\TagRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    private function getEntryRepositoryMock()
-    {
-        return $this->getMockBuilder('Wallabag\CoreBundle\Repository\EntryRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    private function getLogger()
-    {
-        return new Logger('foo');
-    }
+    
 }

@@ -125,18 +125,7 @@ class UserRestController extends WallabagRestController
      *
      * @return JsonResponse
      */
-    private function sendUser(User $user, $group = 'user_api', $status = JsonResponse::HTTP_OK)
-    {
-        $json = $this->get('jms_serializer')->serialize(
-            $user,
-            'json',
-            SerializationContext::create()->setGroups([$group])
-        );
-
-        return (new JsonResponse())
-            ->setJson($json)
-            ->setStatusCode($status);
-    }
+    
 
     /**
      * Translate errors message.
@@ -145,13 +134,5 @@ class UserRestController extends WallabagRestController
      *
      * @return array
      */
-    private function translateErrors($errors)
-    {
-        $translatedErrors = [];
-        foreach ($errors as $error) {
-            $translatedErrors[] = $this->get('translator')->trans($error);
-        }
-
-        return $translatedErrors;
-    }
+    
 }

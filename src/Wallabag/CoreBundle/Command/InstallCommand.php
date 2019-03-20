@@ -338,46 +338,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return bool
      */
-    private function isDatabasePresent()
-    {
-        $connection = $this->getContainer()->get('doctrine')->getManager()->getConnection();
-        $databaseName = $connection->getDatabase();
-
-        try {
-            $schemaManager = $connection->getSchemaManager();
-        } catch (\Exception $exception) {
-            // mysql & sqlite
-            if (false !== strpos($exception->getMessage(), sprintf("Unknown database '%s'", $databaseName))) {
-                return false;
-            }
-
-            // pgsql
-            if (false !== strpos($exception->getMessage(), sprintf('database "%s" does not exist', $databaseName))) {
-                return false;
-            }
-
-            throw $exception;
-        }
-
-        // custom verification for sqlite, since `getListDatabasesSQL` doesn't work for sqlite
-        if ('sqlite' === $schemaManager->getDatabasePlatform()->getName()) {
-            $params = $this->getContainer()->get('doctrine.dbal.default_connection')->getParams();
-
-            if (isset($params['path']) && file_exists($params['path'])) {
-                return true;
-            }
-
-            return false;
-        }
-
-        try {
-            return \in_array($databaseName, $schemaManager->listDatabases(), true);
-        } catch (\Doctrine\DBAL\Exception\DriverException $e) {
-            // it means we weren't able to get database list, assume the database doesn't exist
-
-            return false;
-        }
-    }
+    
 
     /**
      * Check if the schema is already created.
@@ -385,10 +346,5 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return bool
      */
-    private function isSchemaPresent()
-    {
-        $schemaManager = $this->getContainer()->get('doctrine')->getManager()->getConnection()->getSchemaManager();
-
-        return \count($schemaManager->listTableNames()) > 0 ? true : false;
-    }
+    
 }

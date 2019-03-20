@@ -93,17 +93,7 @@ class RuleBasedTagger
      *
      * @return Tag
      */
-    private function getTag($label)
-    {
-        $tag = $this->tagRepository->findOneByLabel($label);
-
-        if (!$tag) {
-            $tag = new Tag();
-            $tag->setLabel($label);
-        }
-
-        return $tag;
-    }
+    
 
     /**
      * Retrieves the tagging rules for a given user.
@@ -112,8 +102,5 @@ class RuleBasedTagger
      *
      * @return array<TaggingRule>
      */
-    private function getRulesForUser(User $user)
-    {
-        return $user->getConfig()->getTaggingRules();
-    }
+    
 }

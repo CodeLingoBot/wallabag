@@ -133,12 +133,5 @@ class AnnotationRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function getSortedQueryBuilderByUser($userId)
-    {
-        return $this->createQueryBuilder('a')
-            ->leftJoin('a.user', 'u')
-            ->andWhere('u.id = :userId')->setParameter('userId', $userId)
-            ->orderBy('a.id', 'desc')
-        ;
-    }
+    
 }

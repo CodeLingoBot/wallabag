@@ -131,12 +131,5 @@ class TagRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    private function getQueryBuilderByUser($userId)
-    {
-        return $this->createQueryBuilder('t')
-            ->leftJoin('t.entries', 'e')
-            ->where('e.user = :userId')->setParameter('userId', $userId)
-            ->groupBy('t.id')
-            ->orderBy('t.slug');
-    }
+    
 }

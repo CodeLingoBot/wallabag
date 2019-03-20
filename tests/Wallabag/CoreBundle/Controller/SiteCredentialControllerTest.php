@@ -137,17 +137,5 @@ class SiteCredentialControllerTest extends WallabagCoreTestCase
         $this->assertContains('flashes.site_credential.notice.deleted', $crawler->filter('body')->extract(['_text'])[0]);
     }
 
-    private function createSiteCredential(Client $client)
-    {
-        $credential = new SiteCredential($this->getLoggedInUser());
-        $credential->setHost('google.io');
-        $credential->setUsername('sergei');
-        $credential->setPassword('microsoft');
-
-        $em = $client->getContainer()->get('doctrine.orm.entity_manager');
-        $em->persist($credential);
-        $em->flush();
-
-        return $credential;
-    }
+    
 }

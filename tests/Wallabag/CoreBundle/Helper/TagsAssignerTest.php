@@ -100,10 +100,5 @@ class TagsAssignerTest extends TestCase
         $this->assertSame('tag1', $entry->getTags()[0]->getLabel());
     }
 
-    private function getTagRepositoryMock()
-    {
-        return $this->getMockBuilder(TagRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
+    
 }

@@ -92,14 +92,7 @@ class DownloadImagesSubscriber implements EventSubscriberInterface
      *
      * @return string|false False in case of async
      */
-    private function downloadImages(Entry $entry)
-    {
-        return $this->downloadImages->processHtml(
-            $entry->getId(),
-            $entry->getContent(),
-            $entry->getUrl()
-        );
-    }
+    
 
     /**
      * Download the preview picture.
@@ -110,12 +103,5 @@ class DownloadImagesSubscriber implements EventSubscriberInterface
      *
      * @return string|false False in case of async
      */
-    private function downloadPreviewImage(Entry $entry)
-    {
-        return $this->downloadImages->processSingleImage(
-            $entry->getId(),
-            $entry->getPreviewPicture(),
-            $entry->getUrl()
-        );
-    }
+    
 }

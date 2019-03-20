@@ -209,54 +209,5 @@ class InstapaperImportTest extends TestCase
         $this->assertSame('ERROR', $records[0]['level_name']);
     }
 
-    private function getInstapaperImport($unsetUser = false, $dispatched = 0)
-    {
-        $this->user = new User();
-
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->uow = $this->getMockBuilder('Doctrine\ORM\UnitOfWork')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->em
-            ->expects($this->any())
-            ->method('getUnitOfWork')
-            ->willReturn($this->uow);
-
-        $this->uow
-            ->expects($this->any())
-            ->method('getScheduledEntityInsertions')
-            ->willReturn([]);
-
-        $this->contentProxy = $this->getMockBuilder('Wallabag\CoreBundle\Helper\ContentProxy')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->tagsAssigner = $this->getMockBuilder('Wallabag\CoreBundle\Helper\TagsAssigner')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher
-            ->expects($this->exactly($dispatched))
-            ->method('dispatch');
-
-        $import = new InstapaperImport($this->em, $this->contentProxy, $this->tagsAssigner, $dispatcher);
-
-        $this->logHandler = new TestHandler();
-        $logger = new Logger('test', [$this->logHandler]);
-        $import->setLogger($logger);
-
-        if (false === $unsetUser) {
-            $import->setUser($this->user);
-        }
-
-        return $import;
-    }
+    
 }

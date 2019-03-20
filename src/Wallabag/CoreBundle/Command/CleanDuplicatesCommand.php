@@ -66,42 +66,9 @@ class CleanDuplicatesCommand extends ContainerAwareCommand
     /**
      * @param User $user
      */
-    private function cleanDuplicates(User $user)
-    {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $repo = $this->getContainer()->get('wallabag_core.entry_repository');
+    
 
-        $entries = $repo->findAllEntriesIdAndUrlByUserId($user->getId());
-
-        $duplicatesCount = 0;
-        $urls = [];
-        foreach ($entries as $entry) {
-            $url = $this->similarUrl($entry['url']);
-
-            /* @var $entry Entry */
-            if (\in_array($url, $urls, true)) {
-                ++$duplicatesCount;
-
-                $em->remove($repo->find($entry['id']));
-                $em->flush(); // Flushing at the end of the loop would require the instance not being online
-            } else {
-                $urls[] = $entry['url'];
-            }
-        }
-
-        $this->duplicates += $duplicatesCount;
-
-        $this->io->text(sprintf('Cleaned <info>%d</info> duplicates for user <info>%s</info>', $duplicatesCount, $user->getUserName()));
-    }
-
-    private function similarUrl($url)
-    {
-        if (\in_array(substr($url, -1), ['/', '#'], true)) { // get rid of "/" and "#" and the end of urls
-            return substr($url, 0, \strlen($url));
-        }
-
-        return $url;
-    }
+    
 
     /**
      * Fetches a user from its username.
@@ -110,8 +77,5 @@ class CleanDuplicatesCommand extends ContainerAwareCommand
      *
      * @return \Wallabag\UserBundle\Entity\User
      */
-    private function getUser($username)
-    {
-        return $this->getContainer()->get('wallabag_user.user_repository')->findOneByUserName($username);
-    }
+    
 }

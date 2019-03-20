@@ -61,13 +61,7 @@ class TagAllCommand extends ContainerAwareCommand
      *
      * @return \Wallabag\UserBundle\Entity\User
      */
-    private function getUser($username)
-    {
-        return $this->getContainer()->get('wallabag_user.user_repository')->findOneByUserName($username);
-    }
+    
 
-    private function getDoctrine()
-    {
-        return $this->getContainer()->get('doctrine');
-    }
+    
 }

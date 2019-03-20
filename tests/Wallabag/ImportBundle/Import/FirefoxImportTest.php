@@ -208,40 +208,5 @@ class FirefoxImportTest extends TestCase
         $this->assertSame('ERROR', $records[0]['level_name']);
     }
 
-    private function getFirefoxImport($unsetUser = false, $dispatched = 0)
-    {
-        $this->user = new User();
-
-        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->contentProxy = $this->getMockBuilder('Wallabag\CoreBundle\Helper\ContentProxy')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->tagsAssigner = $this->getMockBuilder('Wallabag\CoreBundle\Helper\TagsAssigner')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $dispatcher
-            ->expects($this->exactly($dispatched))
-            ->method('dispatch');
-
-        $wallabag = new FirefoxImport($this->em, $this->contentProxy, $this->tagsAssigner, $dispatcher);
-
-        $this->logHandler = new TestHandler();
-        $logger = new Logger('test', [$this->logHandler]);
-        $wallabag->setLogger($logger);
-
-        if (false === $unsetUser) {
-            $wallabag->setUser($this->user);
-        }
-
-        return $wallabag;
-    }
+    
 }

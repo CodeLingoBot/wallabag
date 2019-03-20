@@ -282,8 +282,5 @@ class ExportControllerTest extends WallabagCoreTestCase
         $this->assertNotEmpty('updated_at', (string) $content->entry[0]->updated_at);
     }
 
-    private function getSanitizedFilename($title)
-    {
-        return preg_replace('/[^A-Za-z0-9\- \']/', '', iconv('utf-8', 'us-ascii//TRANSLIT', $title));
-    }
+    
 }

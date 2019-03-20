@@ -76,12 +76,5 @@ class LocaleListenerTest extends TestCase
         $this->assertSame('fr', $request->getLocale());
     }
 
-    private function getEvent(Request $request)
-    {
-        $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return new GetResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST);
-    }
+    
 }

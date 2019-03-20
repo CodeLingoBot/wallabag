@@ -49,17 +49,7 @@ class ShowUserCommand extends ContainerAwareCommand
     /**
      * @param User $user
      */
-    private function showUser(User $user)
-    {
-        $this->io->listing([
-            sprintf('Username: %s', $user->getUsername()),
-            sprintf('Email: %s', $user->getEmail()),
-            sprintf('Display name: %s', $user->getName()),
-            sprintf('Creation date: %s', $user->getCreatedAt()->format('Y-m-d H:i:s')),
-            sprintf('Last login: %s', null !== $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : 'never'),
-            sprintf('2FA activated: %s', $user->isTwoFactorAuthentication() ? 'yes' : 'no'),
-        ]);
-    }
+    
 
     /**
      * Fetches a user from its username.
@@ -68,8 +58,5 @@ class ShowUserCommand extends ContainerAwareCommand
      *
      * @return \Wallabag\UserBundle\Entity\User
      */
-    private function getUser($username)
-    {
-        return $this->getContainer()->get('wallabag_user.user_repository')->findOneByUserName($username);
-    }
+    
 }
